@@ -9,6 +9,7 @@ class UsersCredit extends Model
 {
     use HasFactory;
     protected $table = 'users_credit';
+    protected $fillable = ['credit'];
 
     public static function getDefaultUserCredit($userId)
     {
