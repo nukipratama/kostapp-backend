@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\UsersRole;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\UsersCredit;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
@@ -41,7 +41,9 @@ class UserSeeder extends Seeder
                 'remember_token' => Str::random(10),
             ]);
             $user->role()->create(['role_id' => $each['role_id']]);
-            $user->credit()->create();
+            $user->credit()->create([
+                'credit' => UsersCredit::getDefaultUserCredit($user->id)
+            ]);
         }
     }
 }
