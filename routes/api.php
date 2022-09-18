@@ -1,8 +1,10 @@
 <?php
 
+use App\Exceptions\UnauthorizedException;
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,11 +17,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
 
-Route::name('v1.')->prefix('v1')->middleware(['api'])->group(function () {
-    Route::post('/register', [AuthController::class, 'register'])->name('register');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+
+Route::group([
+    'name' => 'v1.',
+    'prefix' => 'v1',
+], function () {
+    Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
+    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+    Route::get('/profile', [AuthController::class, 'profile'])->middleware('auth:sanctum')->name('auth.profile');
+
+    // Owner Routes
+    Route::group([
+        'name' => 'owner.',
+        'prefix' => 'owner',
+        'middleware' => ['auth:sanctum', 'authenticatedOwner']
+    ], function () {
+    });
+
+    // User Routes
+    Route::group([
+        'name' => 'user.',
+        'prefix' => 'user',
+        'middleware' => ['auth:sanctum', 'authenticatedUser']
+    ], function () {
+    });
 });
