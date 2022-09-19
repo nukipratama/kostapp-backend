@@ -30,7 +30,7 @@ or you can use **Crontab**:
     0 0 1 * * cd /your-project-path && php artisan recharge:credit >> /dev/null 2>&1
 ```
 
-# How to use
+# Installation
 1. Clone this Repo
 ```
     git clone https://github.com/nukipratama/kostapp-backend.git
@@ -44,3 +44,10 @@ or you can use **Crontab**:
 ```
     php artisan project:init
 ```
+
+# Dummy Account
+If you run the project via 'project:init' or runnning 'db:seed' then the seeders will automatically create 3 acccount with different roles, for testing purpose. 
+Here is the details of the seeded accounts (email / password / role):
+- owner@kostapp.dev / password / Owner
+- regular@kostapp.dev / password / Regular User
+- premium@kostapp.dev / password / Premium User
