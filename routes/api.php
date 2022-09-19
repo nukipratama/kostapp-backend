@@ -1,10 +1,7 @@
 <?php
 
-use App\Exceptions\UnauthorizedException;
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /*
 |--------------------------------------------------------------------------
