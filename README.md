@@ -42,7 +42,7 @@ or you can use **Crontab**:
 3. Edit .env, fill DB setting and save
 4. Run this command to initialize migrations, seeds, config / route cache, and starting the project
 ```
-    php artisan project:init
+    composer install; php artisan project:init
 ```
 
 # Dummy Account
