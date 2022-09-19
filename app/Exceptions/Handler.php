@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Response;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -39,7 +40,6 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
-
         $this->renderable(function (NotFoundHttpException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
@@ -48,7 +48,6 @@ class Handler extends ExceptionHandler
                 ], Response::HTTP_NOT_FOUND);
             }
         });
-
         $this->renderable(function (UnauthorizedException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
@@ -57,13 +56,28 @@ class Handler extends ExceptionHandler
                 ], Response::HTTP_UNAUTHORIZED);
             }
         });
-
         $this->renderable(function (ForbiddenPermissionException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
                     'success' => false,
-                    'message' => $e->getMessage() ?? 'Unauthorized'
+                    'message' => $e->getMessage()
                 ], Response::HTTP_FORBIDDEN);
+            }
+        });
+        $this->renderable(function (ValidationException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->errors()
+                ], Response::HTTP_FORBIDDEN);
+            }
+        });
+        $this->renderable(function (InsufficientCreditException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'success' => false,
+                    'message' => $e->getMessage()
+                ], Response::HTTP_EXPECTATION_FAILED);
             }
         });
     }

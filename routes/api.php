@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\KostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,19 +25,26 @@ Route::group([
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
     Route::get('/profile', [AuthController::class, 'profile'])->middleware('auth:sanctum')->name('auth.profile');
 
-    // Owner Routes
+    // Owner Kost Routes
     Route::group([
         'name' => 'owner.',
-        'prefix' => 'owner',
+        'prefix' => 'owner/kosts',
         'middleware' => ['auth:sanctum', 'authenticatedOwner']
     ], function () {
+        Route::get('/', [KostController::class, 'getKostsByOwner'])->name('kosts.getKostsByOwner');
+        Route::post('/', [KostController::class, 'store'])->name('kosts.store');
+        Route::put('/{kost}', [KostController::class, 'update'])->name('kosts.update');
+        Route::delete('/{kost}', [KostController::class, 'destroy'])->name('kosts.destroy');
     });
 
-    // User Routes
+    // User Kost Routes
     Route::group([
-        'name' => 'user.',
-        'prefix' => 'user',
+        'name' => 'kosts.',
+        'prefix' => 'kosts',
         'middleware' => ['auth:sanctum', 'authenticatedUser']
     ], function () {
+        Route::get('/', [KostController::class, 'index'])->name('kosts.index');
+        Route::get('/availability/{kost}', [KostController::class, 'checkAvailability'])->name('kosts.checkAvailability');
+        Route::get('/{kost}', [KostController::class, 'show'])->name('kosts.show');
     });
 });
